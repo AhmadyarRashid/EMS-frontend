@@ -1,6 +1,6 @@
 import React from 'react'
 import {makeStyles} from "@material-ui/core/styles"
-import {Container, Typography, Paper, Box, Button, Menu, MenuItem} from "@material-ui/core"
+import {Container, Typography, Paper, Box, Button, Menu, MenuItem, Hidden} from "@material-ui/core"
 import DarkIcon from '@material-ui/icons/Brightness4'
 import BrightIcon from '@material-ui/icons/Brightness7'
 import MenuIcon from '@material-ui/icons/Menu'
@@ -46,9 +46,16 @@ function Header({onToggleDark, themeMode}) {
   return (
     <Paper className={classes.paper}>
       <Container className={classes.container}>
-        <Typography variant="h5" subtitle1="h2" className={classes.logo}>
-          Event Management System
-        </Typography>
+        <Hidden smUp sm>
+          <Typography variant="h5" subtitle1="h2" className={classes.logo}>
+            EMS
+          </Typography>
+        </Hidden>
+        <Hidden smDown>
+          <Typography variant="h5" subtitle1="h2" className={classes.logo}>
+            Event Management System
+          </Typography>
+        </Hidden>
 
         <Box component="div">
           {themeMode === "dark" ?
