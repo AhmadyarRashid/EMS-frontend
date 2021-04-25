@@ -63,7 +63,7 @@ function AppRoutes() {
             <DisclaimerPage/>
           </Route>
           <Route path="/">
-            <HomePage/>
+            <HomePage onToggleDark={toggleDarkTheme} themeMode={theme.palette.type}/>
           </Route>
         </Switch>
       </Router>

@@ -1,10 +1,13 @@
 import React from "react"
+import Header from "../Header";
+import CssBaseline from "@material-ui/core/CssBaseline";
 
-function HomePage(){
+function HomePage(props){
   return(
-    <>
-      <h1>This is Home page</h1>
-    </>
+    <React.Fragment>
+      <CssBaseline/>
+      <Header {...props}/>
+    </React.Fragment>
   )
 }
 
