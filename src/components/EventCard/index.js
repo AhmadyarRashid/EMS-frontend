@@ -14,7 +14,7 @@ import {red} from '@material-ui/core/colors';
 import FavoriteIcon from '@material-ui/icons/Favorite';
 import ShareIcon from '@material-ui/icons/Share';
 import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
-import MoreVertIcon from '@material-ui/icons/MoreVert';
+import {colors} from "../../utils/colors"
 import {Box} from "@material-ui/core";
 
 const useStyles = makeStyles((theme) => ({
@@ -26,20 +26,23 @@ const useStyles = makeStyles((theme) => ({
     paddingTop: '56.25%', // 16:9
   },
   expand: {
-    transform: 'rotate(0deg)',
+    transform: 'rotate(270deg)',
     marginLeft: 'auto',
     transition: theme.transitions.create('transform', {
       duration: theme.transitions.duration.shortest,
     }),
   },
   expandOpen: {
-    transform: 'rotate(180deg)',
+    transform: 'rotate(90deg)',
   },
   avatar: {
     backgroundColor: red[500],
   },
   eventCard: {
     margin: 18
+  },
+  price: {
+    color: "red"
   }
 }));
 
@@ -56,7 +59,7 @@ export default function EventCard() {
       <Card style={expanded ?
         { display: 'flex', flexDirection: 'row', maxWidth: "100%"} :
         { display: 'flex', flexDirection: 'column',maxWidth: 345}}>
-        <Box component="div">
+        <Box component="div" style={expanded ? {maxWidth: "40%"}: {}}>
           <CardHeader
             avatar={
               <Avatar aria-label="recipe" className={classes.avatar}>
@@ -64,22 +67,20 @@ export default function EventCard() {
               </Avatar>
             }
             action={
-              <IconButton aria-label="settings">
-                <MoreVertIcon/>
-              </IconButton>
+              <Box component="div" style={{borderRadius: 12, backgroundColor: colors.pink, color: "red", padding: 8, marginTop: 8}}>
+                21 days left
+              </Box>
             }
-            title="Shrimp and Chorizo Paella"
-            subheader="September 14, 2016"
-          />
-          <CardMedia
-            className={classes.media}
-            image="/static/images/cards/paella.jpg"
-            title="Paella dish"
           />
           <CardContent>
-            <Typography variant="body2" color="textSecondary" component="p">
-              This impressive paella is a perfect party dish and a fun meal to cook together with your
-              guests. Add 1 cup of frozen peas along with the mussels, if you like.
+            <Typography variant="h6">
+              Refinable
+            </Typography>
+            <Box component="div" style={{marginTop: 12}}>
+              Total Raise
+            </Box>
+            <Typography variant="h5" className={classes.price}>
+              180 K
             </Typography>
           </CardContent>
           <CardActions disableSpacing>
@@ -115,16 +116,6 @@ export default function EventCard() {
               and chorizo in the pan. Add pimentón, bay leaves, garlic, tomatoes, onion, salt and
               pepper, and cook, stirring often until thickened and fragrant, about 10 minutes. Add
               saffron broth and remaining 4 1/2 cups chicken broth; bring to a boil.
-            </Typography>
-            <Typography paragraph>
-              Add rice and stir very gently to distribute. Top with artichokes and peppers, and cook
-              without stirring, until most of the liquid is absorbed, 15 to 18 minutes. Reduce heat to
-              medium-low, add reserved shrimp and mussels, tucking them down into the rice, and cook
-              again without stirring, until mussels have opened and rice is just tender, 5 to 7
-              minutes more. (Discard any mussels that don’t open.)
-            </Typography>
-            <Typography>
-              Set aside off of the heat to let rest for 10 minutes, and then serve.
             </Typography>
           </CardContent>
         </Collapse>
