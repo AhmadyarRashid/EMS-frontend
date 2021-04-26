@@ -2,6 +2,7 @@ import React from 'react'
 import {makeStyles} from "@material-ui/core/styles"
 import {Box, Container, Grid, Paper, GridList} from "@material-ui/core"
 import {colors} from "../../utils/colors"
+import EventCard from "../EventCard";
 
 const useStyles = makeStyles((theme) => ({
   events: {
@@ -19,9 +20,6 @@ const useStyles = makeStyles((theme) => ({
     flexWrap: 'wrap',
     justifyContent: 'center'
   },
-  eventCard: {
-    margin: 18
-  }
 }));
 
 function Events({themeMode}) {
@@ -35,9 +33,7 @@ function Events({themeMode}) {
           className={classes.eventsList}
         >
           {[1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13].map(item => (
-            <Box component="div" width={1/4} className={classes.eventCard}>
-              <Paper className={classes.paper}>xs</Paper>
-            </Box>
+            <EventCard/>
           ))}
         </Box>
       </Container>
