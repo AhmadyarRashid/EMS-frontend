@@ -19,6 +19,7 @@ const useStyles = makeStyles((theme) => ({
     maxWidth: "60%",
     fontWeight: 800,
     margin: "0 auto 16px",
+    fontSize: "3.5vw",
   },
   redTitle:{
     color: 'red'
@@ -26,7 +27,8 @@ const useStyles = makeStyles((theme) => ({
   heroSubtitle:{
     maxWidth: "55%",
     margin: "0 auto 16px",
-    color: "#a8a8b4"
+    color: "#a8a8b4",
+    fontSize: "1.5vw",
   }
 }));
 
