@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useEffect, useState} from 'react';
 import {makeStyles} from '@material-ui/core/styles';
 import clsx from 'clsx';
 import Card from '@material-ui/core/Card';
@@ -47,19 +47,22 @@ const useStyles = makeStyles((theme) => ({
     display: 'flex',
     alignItems: 'center',
     justifyContent: 'center',
-    borderRadius: 12
+    borderRadius: 12,
   },
   paper: {
     backgroundColor: theme.palette.background.paper,
     boxShadow: theme.shadows[5],
     padding: theme.spacing(2, 4, 3),
+    maxHeight: "80vh",
+    maxWidth: "80vw",
+    overflowX: "scroll",
   },
 }));
 
 export default function EventCard() {
   const classes = useStyles();
-  const [expanded, setExpanded] = React.useState(false);
-  const [isOpen, setModalOpen] = React.useState(false);
+  const [expanded, setExpanded] = useState(false);
+  const [isOpen, setModalOpen] = useState(false);
 
   const handleExpandClick = () => {
     setExpanded(!expanded);
@@ -180,15 +183,50 @@ export default function EventCard() {
             open={isOpen}
             onClose={() => setModalOpen(false)}
             closeAfterTransition
-            // BackdropComponent={Backdrop}
             BackdropProps={{
               timeout: 500,
             }}
         >
           <Fade in={isOpen}>
             <div className={classes.paper}>
-              <h2 id="transition-modal-title">Transition modal</h2>
-              <p id="transition-modal-description">react-transition-group animates me.</p>
+              <h2 id="transition-modal-title">Night Party</h2>
+              <Typography paragraph>
+                Heat 1/2 cup of the broth in a pot until simmering, add saffron and set aside for 10
+                minutes.
+              </Typography>
+              <Typography paragraph>
+                Heat oil in a (14- to 16-inch) paella pan or a large, deep skillet over medium-high
+                heat. Add chicken, shrimp and chorizo, and cook, stirring occasionally until lightly
+                browned, 6 to 8 minutes. Transfer shrimp to a large plate and set aside, leaving chicken
+                and chorizo in the pan. Add pimentón, bay leaves, garlic, tomatoes, onion, salt and
+                pepper, and cook, stirring often until thickened and fragrant, about 10 minutes. Add
+                saffron broth and remaining 4 1/2 cups chicken broth; bring to a boil.
+              </Typography>
+              <Typography paragraph>
+                Heat oil in a (14- to 16-inch) paella pan or a large, deep skillet over medium-high
+                heat. Add chicken, shrimp and chorizo, and cook, stirring occasionally until lightly
+                browned, 6 to 8 minutes. Transfer shrimp to a large plate and set aside, leaving chicken
+                and chorizo in the pan. Add pimentón, bay leaves, garlic, tomatoes, onion, salt and
+                pepper, and cook, stirring often until thickened and fragrant, about 10 minutes. Add
+                saffron broth and remaining 4 1/2 cups chicken broth; bring to a boil.
+              </Typography>
+              <Typography paragraph>
+                Heat oil in a (14- to 16-inch) paella pan or a large, deep skillet over medium-high
+                heat. Add chicken, shrimp and chorizo, and cook, stirring occasionally until lightly
+                browned, 6 to 8 minutes. Transfer shrimp to a large plate and set aside, leaving chicken
+                and chorizo in the pan. Add pimentón, bay leaves, garlic, tomatoes, onion, salt and
+                pepper, and cook, stirring often until thickened and fragrant, about 10 minutes. Add
+                saffron broth and remaining 4 1/2 cups chicken broth; bring to a boil.
+              </Typography>
+              <Typography paragraph>
+                Heat oil in a (14- to 16-inch) paella pan or a large, deep skillet over medium-high
+                heat. Add chicken, shrimp and chorizo, and cook, stirring occasionally until lightly
+                browned, 6 to 8 minutes. Transfer shrimp to a large plate and set aside, leaving chicken
+                and chorizo in the pan. Add pimentón, bay leaves, garlic, tomatoes, onion, salt and
+                pepper, and cook, stirring often until thickened and fragrant, about 10 minutes. Add
+                saffron broth and remaining 4 1/2 cups chicken broth; bring to a boil.
+              </Typography>
+              <Button onClick={() => setModalOpen(false)}>Close</Button>
             </div>
           </Fade>
         </Modal>
