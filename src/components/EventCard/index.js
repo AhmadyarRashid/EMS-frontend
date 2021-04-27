@@ -159,11 +159,8 @@ export default function EventCard() {
                 }
             />
             <CardContent>
-              <Typography variant="h6">
-                Refinable
-              </Typography>
-              <Box component="div" style={{marginTop: 12}}>
-                Total Raise
+              <Box component="div">
+                Night Party
               </Box>
               <Typography variant="h5" className={classes.price}>
                 180 K
