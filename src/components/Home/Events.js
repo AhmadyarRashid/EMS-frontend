@@ -8,6 +8,9 @@ const useStyles = makeStyles((theme) => ({
   events: {
     padding: "80px 0",
     paddingBottom: "48px !important",
+    [theme.breakpoints.down('sm')]: {
+      padding: "40px 0",
+    },
   },
   paper: {
     padding: theme.spacing(2),

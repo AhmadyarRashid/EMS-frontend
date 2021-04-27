@@ -8,6 +8,9 @@ const useStyles = makeStyles((theme) => ({
     textAlign: "center",
     padding: "100px 0",
     overflow: "hidden",
+    [theme.breakpoints.down('sm')]: {
+      padding: "80px 0",
+    },
   },
   container: {
     margin: '0 auto'
@@ -20,6 +23,10 @@ const useStyles = makeStyles((theme) => ({
     fontWeight: 800,
     margin: "0 auto 16px",
     fontSize: "3.5vw",
+    [theme.breakpoints.down('sm')]: {
+      fontSize: "5vw",
+      maxWidth: "80%",
+    },
   },
   redTitle:{
     color: 'red'
@@ -29,6 +36,10 @@ const useStyles = makeStyles((theme) => ({
     margin: "0 auto 16px",
     color: "#a8a8b4",
     fontSize: "1.5vw",
+    [theme.breakpoints.down('sm')]: {
+      fontSize: "2.5vw",
+      maxWidth: "85%",
+    },
   }
 }));
 
