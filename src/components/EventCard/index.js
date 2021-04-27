@@ -3,7 +3,6 @@ import {makeStyles} from '@material-ui/core/styles';
 import clsx from 'clsx';
 import Card from '@material-ui/core/Card';
 import CardHeader from '@material-ui/core/CardHeader';
-import CardMedia from '@material-ui/core/CardMedia';
 import CardContent from '@material-ui/core/CardContent';
 import CardActions from '@material-ui/core/CardActions';
 import Collapse from '@material-ui/core/Collapse';
@@ -15,7 +14,7 @@ import FavoriteIcon from '@material-ui/icons/Favorite';
 import ShareIcon from '@material-ui/icons/Share';
 import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
 import {colors} from "../../utils/colors"
-import {Box, Hidden} from "@material-ui/core";
+import {Box, Hidden, Modal, Button, Fade} from "@material-ui/core";
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -43,12 +42,24 @@ const useStyles = makeStyles((theme) => ({
   },
   price: {
     color: "red"
-  }
+  },
+  modal: {
+    display: 'flex',
+    alignItems: 'center',
+    justifyContent: 'center',
+    borderRadius: 12
+  },
+  paper: {
+    backgroundColor: theme.palette.background.paper,
+    boxShadow: theme.shadows[5],
+    padding: theme.spacing(2, 4, 3),
+  },
 }));
 
 export default function EventCard() {
   const classes = useStyles();
   const [expanded, setExpanded] = React.useState(false);
+  const [isOpen, setModalOpen] = React.useState(false);
 
   const handleExpandClick = () => {
     setExpanded(!expanded);
@@ -118,6 +129,9 @@ export default function EventCard() {
                 pepper, and cook, stirring often until thickened and fragrant, about 10 minutes. Add
                 saffron broth and remaining 4 1/2 cups chicken broth; bring to a boil.
               </Typography>
+              <Button color="info" onClick={() => setModalOpen(true)}>
+                More Details
+              </Button>
             </CardContent>
           </Collapse>
         </Card>
@@ -126,7 +140,7 @@ export default function EventCard() {
 
   const MobileCard = () => (
       <Box component="div" width="100%" className={classes.eventCard}>
-        <Card>
+        <Card onClick={() => setModalOpen(true)}>
           <Box component="div" style={expanded ? {maxWidth: "40%"} : {}}>
             <CardHeader
                 avatar={
@@ -157,6 +171,30 @@ export default function EventCard() {
       </Box>
   )
 
+  const eventDetailsModal = () => {
+    return(
+        <Modal
+            aria-labelledby="transition-modal-title"
+            aria-describedby="transition-modal-description"
+            className={classes.modal}
+            open={isOpen}
+            onClose={() => setModalOpen(false)}
+            closeAfterTransition
+            // BackdropComponent={Backdrop}
+            BackdropProps={{
+              timeout: 500,
+            }}
+        >
+          <Fade in={isOpen}>
+            <div className={classes.paper}>
+              <h2 id="transition-modal-title">Transition modal</h2>
+              <p id="transition-modal-description">react-transition-group animates me.</p>
+            </div>
+          </Fade>
+        </Modal>
+    )
+  }
+
   return (
       <React.Fragment>
         <Hidden smDown>
@@ -165,6 +203,7 @@ export default function EventCard() {
         <Hidden smUp sm>
           <MobileCard/>
         </Hidden>
+        {eventDetailsModal()}
       </React.Fragment>
   );
 }
