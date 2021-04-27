@@ -1,7 +1,7 @@
-import React from "react"
-import {Box, Typography, Button, OutlinedInput} from "@material-ui/core"
-import {makeStyles} from "@material-ui/core/styles";
+import React from 'react'
+import {Box, Button, OutlinedInput, Typography} from "@material-ui/core";
 import {colors} from "../../utils/colors";
+import {makeStyles} from "@material-ui/core/styles";
 
 const useStyles = makeStyles((theme) => {
   return ({
@@ -18,8 +18,9 @@ const useStyles = makeStyles((theme) => {
       display: 'flex',
       flexDirection: 'column',
       alignItems: 'center',
+      width: '45%',
       [theme.breakpoints.down('sm')]: {
-        width: '80%'
+        width: '80%',
       },
     },
     title: {
@@ -30,35 +31,51 @@ const useStyles = makeStyles((theme) => {
     },
     input: {
       marginTop: 20,
-      minWidth: "100%",
+      minWidth: "60%",
       [theme.breakpoints.down('sm')]: {
-        padding: 0,
-        minWidth: "80%",
+        minWidth: "100%",
       },
     },
     btn: {
       padding: 8,
       marginTop: 20,
-      minWidth: "50%",
+      minWidth: "20%",
       [theme.breakpoints.down('sm')]: {
-        padding: 4,
-        minWidth: "40%",
+        minWidth: "50%",
+        padding: 4
       },
     }
   });
 });
 
-function NewsLettterSubscription({themeMode}) {
+function ContactUs({themeMode}){
   const classes = useStyles()
-
-  return (
+  return(
     <Box component="div" className={classes.root}
          style={{backgroundColor: themeMode === "light" ? "white" : colors.black1}}>
       <Box component="div" className={classes.form}>
-        <Typography variant="h4" className={classes.title}>Newsletter Subscription</Typography>
+        <Typography variant="h4" className={classes.title}>Contact Us</Typography>
         <OutlinedInput
           id="outlined-basic"
-          placeholder="enter email"
+          placeholder="name"
+          variant="outlined"
+          className={classes.input}
+        />
+        <OutlinedInput
+          id="outlined-basic"
+          placeholder="email"
+          variant="outlined"
+          className={classes.input}
+        />
+        <OutlinedInput
+          id="outlined-basic"
+          placeholder="phone No"
+          variant="outlined"
+          className={classes.input}
+        />
+        <OutlinedInput
+          id="outlined-basic"
+          placeholder="Message"
           variant="outlined"
           className={classes.input}
         />
@@ -66,10 +83,10 @@ function NewsLettterSubscription({themeMode}) {
           variant="contained"
           color="primary"
           className={classes.btn}
-        >Subscribe</Button>
+        >Send</Button>
       </Box>
     </Box>
   )
 }
 
-export default NewsLettterSubscription;
+export default ContactUs;

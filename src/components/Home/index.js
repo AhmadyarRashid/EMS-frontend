@@ -4,6 +4,8 @@ import CssBaseline from "@material-ui/core/CssBaseline";
 import BannerComponent from "./Banner";
 import Events from "./Events";
 import NewsLettterSubscription from "./NewsletterSubscription";
+import ContactUs from "./Contactus";
+import Footer from "./Footer";
 
 function HomePage(props){
   return(
@@ -13,6 +15,8 @@ function HomePage(props){
       <BannerComponent />
       <NewsLettterSubscription {...props}/>
       <Events {...props}/>
+      <ContactUs {...props} />
+      <Footer {...props} />
     </React.Fragment>
   )
 }

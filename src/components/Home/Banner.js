@@ -19,26 +19,26 @@ const useStyles = makeStyles((theme) => ({
     wordWrap: "break-word"
   },
   title: {
-    maxWidth: "60%",
+    maxWidth: "80%",
     fontWeight: 800,
     margin: "0 auto 16px",
     fontSize: "3.5vw",
     [theme.breakpoints.down('sm')]: {
-      fontSize: "5vw",
-      maxWidth: "80%",
+      fontSize: "7.5vw",
+      maxWidth: "90%",
     },
   },
   redTitle:{
     color: 'red'
   },
   heroSubtitle:{
-    maxWidth: "55%",
+    maxWidth: "80%",
     margin: "0 auto 16px",
     color: "#a8a8b4",
     fontSize: "1.5vw",
     [theme.breakpoints.down('sm')]: {
-      fontSize: "2.5vw",
-      maxWidth: "85%",
+      fontSize: "4vw",
+      maxWidth: "90%",
     },
   }
 }));
