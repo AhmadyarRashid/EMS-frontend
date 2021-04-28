@@ -1,5 +1,6 @@
 import React from 'react'
 import {makeStyles} from "@material-ui/core/styles"
+import {Link} from "react-router-dom"
 import {Container, Typography, Paper, Box, Button, Menu, MenuItem, Hidden} from "@material-ui/core"
 import DarkIcon from '@material-ui/icons/Brightness4'
 import BrightIcon from '@material-ui/icons/Brightness7'
@@ -77,6 +78,7 @@ function Header({onToggleDark, themeMode}) {
             open={Boolean(anchorEl)}
             onClose={handleClose}
           >
+            <MenuItem onClick={handleClose}><Link to="/login">Login</Link></MenuItem>
             <MenuItem onClick={handleClose}>Profile</MenuItem>
             <MenuItem onClick={handleClose}>My account</MenuItem>
             <MenuItem onClick={handleClose}>Logout</MenuItem>

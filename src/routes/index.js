@@ -10,6 +10,8 @@ import AboutPage from "../components/About";
 import DisclaimerPage from "../components/Disclaimer";
 import SignIn from "../components/Signin";
 import SignUp from "../components/Signup";
+import AdminDashboard from "../components/Admin";
+import AdminCustomerDashboard from "../components/Admin/CustomerList";
 
 function AppRoutes() {
   // We keep the theme in app state
@@ -61,6 +63,12 @@ function AppRoutes() {
           </Route>
           <Route path="/disclaimer">
             <DisclaimerPage/>
+          </Route>
+          <Route path="/admin/customers">
+            <AdminCustomerDashboard />
+          </Route>
+          <Route path="/admin">
+            <AdminDashboard/>
           </Route>
           <Route path="/">
             <HomePage onToggleDark={toggleDarkTheme} themeMode={theme.palette.type}/>
