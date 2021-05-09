@@ -12,6 +12,7 @@ import SignIn from "../components/Signin";
 import SignUp from "../components/Signup";
 import AdminDashboard from "../components/Admin";
 import AdminCustomerDashboard from "../components/Admin/CustomerList";
+import CreateEvent from "../components/Event/CreateEvent";
 
 function AppRoutes() {
   // We keep the theme in app state
@@ -66,6 +67,12 @@ function AppRoutes() {
           </Route>
           <Route path="/admin/customers">
             <AdminCustomerDashboard />
+          </Route>
+          <Route path="/admin/event/create">
+            <CreateEvent/>
+          </Route>
+          <Route path="/admin/event/edit/:id">
+            <CreateEvent/>
           </Route>
           <Route path="/admin">
             <AdminDashboard/>

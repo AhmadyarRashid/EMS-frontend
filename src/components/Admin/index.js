@@ -1,7 +1,8 @@
 import React from 'react';
+import {Box, Button, Typography} from "@material-ui/core";
+import {Link} from "react-router-dom"
 import AdminWrapper from "./WrapperComponent";
 import EventTable from "../Table";
-import {Box, Button, Typography} from "@material-ui/core";
 
 export default function AdminDashboard() {
   const columns = [
@@ -39,9 +40,9 @@ export default function AdminDashboard() {
       <Typography variant="h4" style={{marginBottom: 12}}>
         Events
       </Typography>
-      <Box component="div" style={{marginTop: 12, float: 'right', marginBottom: 12}}>
+      <Link to="/admin/event/create" style={{marginTop: 12, float: 'right', marginBottom: 12}}>
         <Button variant="contained" color="primary">Create Event</Button>
-      </Box>
+      </Link>
       <EventTable
         columns={columns}
         rows={rows}
