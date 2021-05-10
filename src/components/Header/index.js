@@ -1,10 +1,10 @@
-import React from 'react'
+import React, {useState, useEffect} from 'react'
 import {makeStyles} from "@material-ui/core/styles"
-import {Link} from "react-router-dom"
-import {Container, Typography, Paper, Box, Button, Menu, MenuItem, Hidden} from "@material-ui/core"
+import {Container, Typography, Paper, Box, Menu, MenuItem, Hidden} from "@material-ui/core"
 import DarkIcon from '@material-ui/icons/Brightness4'
 import BrightIcon from '@material-ui/icons/Brightness7'
 import MenuIcon from '@material-ui/icons/Menu'
+import {withRouter} from "react-router"
 import NotificationsIcon from '@material-ui/icons/NotificationsNone'
 
 const useStyles = makeStyles((theme) => ({
@@ -31,10 +31,17 @@ const useStyles = makeStyles((theme) => ({
   }
 }));
 
-function Header({onToggleDark, themeMode}) {
+function Header({onToggleDark, themeMode, ...props}) {
   const classes = useStyles()
 
-  const [anchorEl, setAnchorEl] = React.useState(null);
+  const [anchorEl, setAnchorEl] = useState(null);
+  const [isLoggedin, setIsLoggedIn] = useState(false);
+
+  useEffect(() => {
+    if (localStorage.getItem('userInfo')) {
+      setIsLoggedIn(true)
+    }
+  }, [])
 
   const handleClick = (event) => {
     setAnchorEl(event.currentTarget);
@@ -71,22 +78,42 @@ function Header({onToggleDark, themeMode}) {
             aria-haspopup="true"
             onClick={handleClick}
           />
-          <Menu
-            id="simple-menu"
-            anchorEl={anchorEl}
-            keepMounted
-            open={Boolean(anchorEl)}
-            onClose={handleClose}
-          >
-            <MenuItem onClick={handleClose}><Link to="/login">Login</Link></MenuItem>
-            <MenuItem onClick={handleClose}>Profile</MenuItem>
-            <MenuItem onClick={handleClose}>My account</MenuItem>
-            <MenuItem onClick={handleClose}>Logout</MenuItem>
-          </Menu>
+
+          {isLoggedin ?
+            <Menu
+              id="simple-menu"
+              anchorEl={anchorEl}
+              keepMounted
+              open={Boolean(anchorEl)}
+              onClose={handleClose}
+            >
+              <MenuItem onClick={() => {
+                handleClose()
+                props.history.push("/admin")
+              }}>Dashboard</MenuItem>
+              <MenuItem onClick={() => {
+                handleClose()
+                localStorage.removeItem("userInfo")
+                props.history.push("/login")
+              }}>Logout</MenuItem>
+            </Menu> :
+            <Menu
+              id="simple-menu"
+              anchorEl={anchorEl}
+              keepMounted
+              open={Boolean(anchorEl)}
+              onClose={handleClose}
+            >
+              <MenuItem onClick={() => {
+                handleClose()
+                props.history.push("/login")
+              }}>Login</MenuItem>
+            </Menu>
+          }
         </Box>
       </Container>
     </Paper>
   )
 }
 
-export default Header
+export default withRouter(Header)
