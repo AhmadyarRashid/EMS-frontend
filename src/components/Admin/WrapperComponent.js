@@ -19,7 +19,6 @@ import ListItemText from '@material-ui/core/ListItemText';
 import EventIcon from '@material-ui/icons/Event';
 import CustomerIcon from '@material-ui/icons/Group';
 import ExitToAppIcon from '@material-ui/icons/ExitToApp';
-import {Link} from "react-router-dom"
 
 const drawerWidth = 240;
 

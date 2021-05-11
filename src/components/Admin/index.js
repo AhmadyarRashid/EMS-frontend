@@ -17,8 +17,8 @@ export default function AdminDashboard() {
     axios.get(`${baseUrl}/api/event/${userInfo.role}/${userInfo.id}`)
       .then(({data}) => {
         if (data.isSuccess) {
-          const tempRows = data.payload.map(({id, title, startDateTime, endDateTime, type, sizeOfVenue, about, price}) =>
-            createData(id, title, startDateTime, endDateTime, type, sizeOfVenue, price, about))
+          const tempRows = data.payload.map(({id, title, startDateTime, endDateTime, type, sizeOfVenue, about, price, status}) =>
+            createData(id, title, startDateTime, endDateTime, type, sizeOfVenue, price, about, status))
           setRows(tempRows)
         }
       })
@@ -35,15 +35,26 @@ export default function AdminDashboard() {
     {id: 'sizeOfVenue', label: 'Size Of Venue', minWidth: 10, align: 'center'},
     {id: 'price', label: 'Price', minWidth: 10, align: 'center'},
     {id: 'about', label: 'Details', minWidth: 200, align: 'center'},
+    {id: 'status', label: 'Status', minWidth: 200, align: 'center'},
     {id: 'action', label: 'Actions', minWidth: 10, align: 'center'},
   ];
 
-  function createData(id, title, startDateTime, endDateTime, type, sizeOfVenue, price,about, action) {
-    return {id, title, startDateTime, endDateTime, type, sizeOfVenue, price,about, action};
+  function createData(id, title, startDateTime, endDateTime, type, sizeOfVenue, price,about, status, action) {
+    return {id, title, startDateTime, endDateTime, type, sizeOfVenue, price,about, status, action};
   }
 
   const updateEventsListAfterDelete = id => {
     const tempEvents = rows.filter(event => event.id !== id);
+    setRows(tempEvents)
+  }
+
+  const updateEventsListAfterApproval = id => {
+    const tempEvents = rows.map(event => {
+      if(event.id === id){
+        event.status = "approved"
+      }
+      return event;
+    });
     setRows(tempEvents)
   }
 
@@ -59,6 +70,7 @@ export default function AdminDashboard() {
         columns={columns}
         rows={rows}
         updateEventsListAfterDelete={updateEventsListAfterDelete}
+        updateEventsListAfterApproval={updateEventsListAfterApproval}
       />
     </AdminWrapper>
   )

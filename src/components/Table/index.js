@@ -11,7 +11,7 @@ import TableRow from '@material-ui/core/TableRow';
 import {Button, ButtonGroup} from "@material-ui/core";
 import EditIcon from '@material-ui/icons/Edit';
 import DeleteIcon from '@material-ui/icons/Delete';
-import DetailsIcon from '@material-ui/icons/Details';
+import ApproveIcon from '@material-ui/icons/CheckCircleOutline';
 import axios from "axios";
 import {baseUrl} from "../../utils/constant";
 import Swal from "sweetalert2";
@@ -38,7 +38,7 @@ const useStyles = makeStyles({
   }
 });
 
-export default function EventTable({children, columns, rows, updateEventsListAfterDelete}) {
+export default function EventTable({children, columns, rows, updateEventsListAfterDelete, updateEventsListAfterApproval}) {
   const classes = useStyles();
   const [page, setPage] = React.useState(0);
   const [rowsPerPage, setRowsPerPage] = React.useState(10);
@@ -53,7 +53,6 @@ export default function EventTable({children, columns, rows, updateEventsListAft
   };
 
   const onEventDeleteHandler = eventId => {
-    console.log("deleted value:", eventId)
     Swal.fire({
       title: 'Are you sure?',
       text: "You won't be able to revert this!",
@@ -66,11 +65,36 @@ export default function EventTable({children, columns, rows, updateEventsListAft
       if (result.isConfirmed) {
         axios.delete(`${baseUrl}/api/event/delete/${eventId}`)
           .then(({data}) => {
-            if(data.isSuccess){
+            if (data.isSuccess) {
               updateEventsListAfterDelete(eventId)
               Swal.fire(
                 'Deleted!',
                 'Your Event has been deleted.',
+                'success'
+              )
+            }
+          })
+      }
+    })
+  }
+
+  const onEventApproveHandler = eventId => {
+    Swal.fire({
+      title: 'Are you sure to approve it?',
+      icon: 'warning',
+      showCancelButton: true,
+      confirmButtonColor: '#3085d6',
+      cancelButtonColor: '#d33',
+      confirmButtonText: 'Yes, Approve it!'
+    }).then((result) => {
+      if (result.isConfirmed) {
+        axios.put(`${baseUrl}/api/event/approve/${eventId}`)
+          .then(({data}) => {
+            if (data.isSuccess) {
+              updateEventsListAfterApproval(eventId)
+              Swal.fire(
+                'Approved!',
+                'Your Event has been Approved.',
                 'success'
               )
             }
@@ -101,7 +125,20 @@ export default function EventTable({children, columns, rows, updateEventsListAft
               return (
                 <TableRow hover role="checkbox" tabIndex={-1} key={row.code}>
                   {columns.map((column) => {
+                    let userInfo = localStorage.getItem("userInfo")
+                    userInfo = userInfo ? JSON.parse(userInfo) : {role: "admin", id: 1}
                     const value = row[column.id];
+                    if (userInfo.role === "admin" && column.id === "status") {
+                      return (
+                        <TableCell key={column.id} align={column.align}>
+                          {row.status === "pending"
+                            ? <Button
+                              onClick={() => onEventApproveHandler(row.id)}
+                              variant="outlined" color="primary">Pending</Button>
+                            : <ApproveIcon style={{color: "green"}}/>}
+                        </TableCell>
+                      )
+                    }
                     if (column.id === "action") {
                       return (
                         <TableCell key={column.id} align={column.align}>
