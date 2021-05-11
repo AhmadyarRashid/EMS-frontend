@@ -18,6 +18,12 @@ function AppRoutes() {
   // We keep the theme in app state
   const [theme, setTheme] = useState({
     palette: {
+      primary: {
+        main: "#f8bbd0",
+      },
+      secondary: {
+        main: "#808080",
+      },
       type: "light"
     }
   });
@@ -27,6 +33,7 @@ function AppRoutes() {
       const themeMode = localStorage.getItem("mode")
       setTheme({
         palette: {
+          ...theme.palette,
           type: !themeMode ? "light" : themeMode
         }
       })
@@ -40,6 +47,7 @@ function AppRoutes() {
     let newPaletteType = theme.palette.type === "light" ? "dark" : "light";
     setTheme({
       palette: {
+        ...theme.palette,
         type: newPaletteType
       }
     });
@@ -69,10 +77,10 @@ function AppRoutes() {
             <AdminCustomerDashboard />
           </Route>
           <Route path="/admin/event/create">
-            <CreateEvent/>
+            <CreateEvent themeMode={theme.palette.type}/>
           </Route>
           <Route path="/admin/event/edit/:id">
-            <CreateEvent/>
+            <CreateEvent themeMode={theme.palette.type}/>
           </Route>
           <Route path="/admin">
             <AdminDashboard/>

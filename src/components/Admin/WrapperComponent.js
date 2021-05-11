@@ -19,6 +19,9 @@ import ListItemText from '@material-ui/core/ListItemText';
 import EventIcon from '@material-ui/icons/Event';
 import CustomerIcon from '@material-ui/icons/Group';
 import ExitToAppIcon from '@material-ui/icons/ExitToApp';
+import Swal from "sweetalert2";
+import axios from "axios";
+import {baseUrl} from "../../utils/constant";
 
 const drawerWidth = 240;
 
@@ -159,8 +162,19 @@ function AdminWrapper({children, ...props}) {
             <ListItemText className={classes.drawerOption} primary="Customers"/>
           </ListItem>
           <ListItem button key="1" onClick={() => {
-            localStorage.removeItem("userInfo")
-            props.history.push("/login")
+            Swal.fire({
+              title: 'Are you sure to logout ?',
+              icon: 'warning',
+              showCancelButton: true,
+              confirmButtonColor: '#3085d6',
+              cancelButtonColor: '#d33',
+              confirmButtonText: 'Yes'
+            }).then((result) => {
+              if (result.isConfirmed) {
+                localStorage.removeItem("userInfo")
+                props.history.push("/login")
+              }
+            })
           }}>
             <ListItemIcon><ExitToAppIcon/></ListItemIcon>
             <ListItemText className={classes.drawerOption} primary="Logout"/>

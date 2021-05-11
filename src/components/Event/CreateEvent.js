@@ -46,7 +46,7 @@ const useStyles = makeStyles((theme) => ({
   }
 }));
 
-function CreateEvent(props) {
+function CreateEvent({themeMode, ...props}) {
   const classes = useStyles()
 
   const {id} = useParams()
@@ -154,7 +154,7 @@ function CreateEvent(props) {
             resetForm,
             isSubmitting,
           }) => (
-          <form className={classes.form} onSubmit={handleSubmit}>
+          <form className={classes.form} style={themeMode === "dark" ? {backgroundColor: 'transparent'}: {}} onSubmit={handleSubmit}>
 
             <Typography variant="h5">
               Create Event
@@ -345,6 +345,7 @@ function CreateEvent(props) {
                     name="about"
                     variant="outlined"
                     rows={8}
+                    style={themeMode === "dark" ? {backgroundColor: 'transparent', color: 'white'}: {}}
                     onChange={handleChange}
                     onBlur={handleBlur}
                     value={values.about}
