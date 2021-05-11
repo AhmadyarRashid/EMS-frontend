@@ -1,39 +1,51 @@
-import React from 'react';
+import React, {useState, useEffect} from 'react';
 import {Box, Button, Typography} from "@material-ui/core";
 import {Link} from "react-router-dom"
 import AdminWrapper from "./WrapperComponent";
 import EventTable from "../Table";
+import axios from "axios";
+import {baseUrl} from "../../utils/constant";
 
 export default function AdminDashboard() {
+
+  const [rows, setRows] = useState([]);
+
+  useEffect(() => {
+    let userInfo = localStorage.getItem("userInfo")
+    userInfo = userInfo ? JSON.parse(userInfo) : {role: "admin", id: 1}
+
+    axios.get(`${baseUrl}/api/event/${userInfo.role}/${userInfo.id}`)
+      .then(({data}) => {
+        if (data.isSuccess) {
+          const tempRows = data.payload.map(({id, title, startDateTime, endDateTime, type, sizeOfVenue, about, price}) =>
+            createData(id, title, startDateTime, endDateTime, type, sizeOfVenue, price, about))
+          setRows(tempRows)
+        }
+      })
+      .catch(error => {
+        console.log("some thing went wrong")
+      })
+  }, [])
+
   const columns = [
-    {id: 'name', label: 'Name', minWidth: 170},
-    {id: 'code', label: 'Code', minWidth: 170, align: 'center'},
-    {id: 'date', label: 'Date', minWidth: 170, align: 'center'},
-    {id: 'price', label: 'Ticket Price', minWidth: 170, align: 'center'},
+    {id: 'title', label: 'Title', minWidth: 170},
+    {id: 'startDateTime', label: 'Start Time', minWidth: 170, align: 'center'},
+    {id: 'endDateTime', label: 'End Time', minWidth: 170, align: 'center'},
+    {id: 'type', label: 'Type', minWidth: 170, align: 'center'},
+    {id: 'sizeOfVenue', label: 'Size Of Venue', minWidth: 10, align: 'center'},
+    {id: 'price', label: 'Price', minWidth: 10, align: 'center'},
+    {id: 'about', label: 'Details', minWidth: 200, align: 'center'},
     {id: 'action', label: 'Actions', minWidth: 10, align: 'center'},
   ];
 
-  function createData(name, code, date, price, action) {
-    return {name, code, date, price, action};
+  function createData(id, title, startDateTime, endDateTime, type, sizeOfVenue, price,about, action) {
+    return {id, title, startDateTime, endDateTime, type, sizeOfVenue, price,about, action};
   }
 
-  const rows = [
-    createData('India', 'IN', 1324171354, 3287263),
-    createData('China', 'CN', 1403500365, 9596961),
-    createData('Italy', 'IT', 60483973, 301340),
-    createData('United States', 'US', 327167434, 9833520),
-    createData('Canada', 'CA', 37602103, 9984670),
-    createData('Australia', 'AU', 25475400, 7692024),
-    createData('Germany', 'DE', 83019200, 357578),
-    createData('Ireland', 'IE', 4857000, 70273),
-    createData('Mexico', 'MX', 126577691, 1972550),
-    createData('Japan', 'JP', 126317000, 377973),
-    createData('France', 'FR', 67022000, 640679),
-    createData('United Kingdom', 'GB', 67545757, 242495),
-    createData('Russia', 'RU', 146793744, 17098246),
-    createData('Nigeria', 'NG', 200962417, 923768),
-    createData('Brazil', 'BR', 210147125, 8515767),
-  ];
+  const updateEventsListAfterDelete = id => {
+    const tempEvents = rows.filter(event => event.id !== id);
+    setRows(tempEvents)
+  }
 
   return (
     <AdminWrapper>
@@ -46,6 +58,7 @@ export default function AdminDashboard() {
       <EventTable
         columns={columns}
         rows={rows}
+        updateEventsListAfterDelete={updateEventsListAfterDelete}
       />
     </AdminWrapper>
   )

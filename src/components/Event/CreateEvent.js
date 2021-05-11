@@ -1,9 +1,13 @@
-import React from "react"
+import React, {useEffect, useState} from "react"
 import {makeStyles} from '@material-ui/core/styles';
 import {useParams} from "react-router-dom"
+import {withRouter} from "react-router"
 import {TextField, Typography, Button, Box, ButtonGroup, TextareaAutosize, Grid} from "@material-ui/core"
 import {Formik} from 'formik';
 import WrapperComponent from "../Admin/WrapperComponent";
+import axios from "axios";
+import {baseUrl} from "../../utils/constant";
+import Swal from "sweetalert2"
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -42,26 +46,102 @@ const useStyles = makeStyles((theme) => ({
   }
 }));
 
-function CreateEvent() {
+function CreateEvent(props) {
   const classes = useStyles()
+
   const {id} = useParams()
+  const [type, setType] = useState("private")
+  const [isLoading, setLoading] = useState(true);
+  const [formValues, setFormValues] = useState({
+    title: '',
+    startDateTime: '',
+    endDateTime: '',
+    sizeOfVenue: "",
+    price: "0",
+    location: '',
+    url: '',
+    about: '',
+  })
+
+  useEffect(() => {
+    if (id) {
+      axios.get(`${baseUrl}/api/event/getEvent/${id}`)
+        .then(({data}) => {
+          console.log("get event data:", data)
+          if (data.isSuccess && data.payload.length > 0) {
+            setLoading(false)
+            setFormValues(data.payload[0])
+            setType(data.payload[0].type)
+          }else {
+            setLoading(false)
+          }
+        })
+        .catch(error => {
+          console.log("get event error:", error)
+          setLoading(false)
+        })
+    } else {
+      setLoading(false)
+    }
+  }, [id])
+
   console.log("params:", id)
+
+  if (isLoading) return null
+  console.log("formValues:", formValues)
   return (
     <WrapperComponent>
       <Formik
-        initialValues={{
-          title: '',
-          startDateTime: '',
-          endDateTime: '',
-          eventType: "private",
-          SizeOfVenue: "",
-          price: "0",
-          location: '',
-          url: '',
-          about: '',
-        }}
-        onSubmit={values => {
+        enableReinitialize
+        initialValues={formValues}
+        onSubmit={(values, {resetForm}) => {
           console.log(values);
+          let userInfo = localStorage.getItem("userInfo")
+          userInfo = userInfo ? JSON.parse(userInfo) : {role: "admin", id: 1}
+          if (id){
+            axios.post(`${baseUrl}/api/event/update/${id}`, {
+              ...values,
+              type,
+            }).then(({data}) => {
+              if (data.isSuccess) {
+                resetForm({
+                  title: '',
+                  startDateTime: '',
+                  endDateTime: '',
+                  sizeOfVenue: "",
+                  price: "0",
+                  location: '',
+                  url: '',
+                  about: '',
+                })
+                props.history.push('/admin')
+                Swal.fire({
+                  icon: "success",
+                  title: 'event updated successfully',
+                  timer: 1500
+                })
+              }
+            }).catch(error => {
+              console.log("create event error: ", error)
+            })
+          }else {
+            axios.post(`${baseUrl}/api/event/create`, {
+              ...values,
+              type,
+              userId: userInfo.id
+            }).then(({data}) => {
+              if (data.isSuccess) {
+                resetForm({})
+                Swal.fire({
+                  icon: "success",
+                  title: 'Event Create Successfully',
+                  timer: 1500
+                })
+              }
+            }).catch(error => {
+              console.log("create event error: ", error)
+            })
+          }
         }}
       >
         {({
@@ -113,8 +193,16 @@ function CreateEvent() {
                   </Typography>
 
                   <ButtonGroup color="primary" style={{marginTop: 12}} aria-label="outlined primary button group">
-                    <Button variant={values.eventType === "public" ? "contained" : "outlined"}>Public</Button>
-                    <Button variant={values.eventType === "private" ? "contained" : "outlined"}>Private</Button>
+                    <Button
+                      name="type"
+                      onClick={() => setType("public")}
+                      variant={type === "public" ? "contained" : "outlined"}
+                    >Public</Button>
+                    <Button
+                      name="type"
+                      onClick={() => setType("private")}
+                      variant={type === "private" ? "contained" : "outlined"}
+                    >Private</Button>
                   </ButtonGroup>
                 </Box>
               </Grid>
@@ -277,4 +365,4 @@ function CreateEvent() {
   )
 }
 
-export default CreateEvent;
+export default withRouter(CreateEvent);

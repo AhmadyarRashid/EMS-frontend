@@ -12,6 +12,10 @@ import {Button, ButtonGroup} from "@material-ui/core";
 import EditIcon from '@material-ui/icons/Edit';
 import DeleteIcon from '@material-ui/icons/Delete';
 import DetailsIcon from '@material-ui/icons/Details';
+import axios from "axios";
+import {baseUrl} from "../../utils/constant";
+import Swal from "sweetalert2";
+import {Link} from "react-router-dom";
 
 const useStyles = makeStyles({
   root: {
@@ -34,7 +38,7 @@ const useStyles = makeStyles({
   }
 });
 
-export default function EventTable({children, columns, rows}) {
+export default function EventTable({children, columns, rows, updateEventsListAfterDelete}) {
   const classes = useStyles();
   const [page, setPage] = React.useState(0);
   const [rowsPerPage, setRowsPerPage] = React.useState(10);
@@ -47,6 +51,33 @@ export default function EventTable({children, columns, rows}) {
     setRowsPerPage(+event.target.value);
     setPage(0);
   };
+
+  const onEventDeleteHandler = eventId => {
+    console.log("deleted value:", eventId)
+    Swal.fire({
+      title: 'Are you sure?',
+      text: "You won't be able to revert this!",
+      icon: 'warning',
+      showCancelButton: true,
+      confirmButtonColor: '#3085d6',
+      cancelButtonColor: '#d33',
+      confirmButtonText: 'Yes, delete it!'
+    }).then((result) => {
+      if (result.isConfirmed) {
+        axios.delete(`${baseUrl}/api/event/delete/${eventId}`)
+          .then(({data}) => {
+            if(data.isSuccess){
+              updateEventsListAfterDelete(eventId)
+              Swal.fire(
+                'Deleted!',
+                'Your Event has been deleted.',
+                'success'
+              )
+            }
+          })
+      }
+    })
+  }
 
   return (
     <Paper className={classes.root}>
@@ -77,9 +108,9 @@ export default function EventTable({children, columns, rows}) {
                           <ButtonGroup
                             size="small"
                             aria-label="small outlined button group">
-                            <DetailsIcon className={classes.detailIcon}/>
-                            <EditIcon className={classes.editIcon}/>
-                            <DeleteIcon className={classes.deleteIcon}/>
+                            {/*<DetailsIcon className={classes.detailIcon}/>*/}
+                            <Link to={`/admin/event/edit/${row.id}`}><EditIcon className={classes.editIcon}/></Link>
+                            <DeleteIcon onClick={() => onEventDeleteHandler(row.id)} className={classes.deleteIcon}/>
                           </ButtonGroup>
                         </TableCell>
                       )

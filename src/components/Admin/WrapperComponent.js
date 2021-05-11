@@ -1,6 +1,7 @@
 import React from 'react';
 import clsx from 'clsx';
 import {makeStyles, useTheme} from '@material-ui/core/styles';
+import {withRouter} from "react-router"
 import Drawer from '@material-ui/core/Drawer';
 import AppBar from '@material-ui/core/AppBar';
 import Toolbar from '@material-ui/core/Toolbar';
@@ -87,7 +88,7 @@ const useStyles = makeStyles((theme) => ({
   }
 }));
 
-export default function AdminWrapper({children}) {
+function AdminWrapper({children, ...props}) {
   const classes = useStyles();
   const theme = useTheme();
   const [open, setOpen] = React.useState(false);
@@ -146,24 +147,25 @@ export default function AdminWrapper({children}) {
         </div>
         <Divider/>
         <List>
-          <Link to="/admin">
-            <ListItem button key="0">
-              <ListItemIcon><EventIcon/></ListItemIcon>
-              <ListItemText className={classes.drawerOption} primary="Events"/>
-            </ListItem>
-          </Link>
-          <Link to="/admin/customers">
-            <ListItem button key="1">
-              <ListItemIcon><CustomerIcon/></ListItemIcon>
-              <ListItemText className={classes.drawerOption} primary="Customers"/>
-            </ListItem>
-          </Link>
-          <Link to="/login">
-            <ListItem button key="1">
-              <ListItemIcon><ExitToAppIcon/></ListItemIcon>
-              <ListItemText className={classes.drawerOption} primary="Logout"/>
-            </ListItem>
-          </Link>
+          <ListItem button key="0" onClick={() => {
+            props.history.push("/admin")
+          }}>
+            <ListItemIcon><EventIcon/></ListItemIcon>
+            <ListItemText className={classes.drawerOption} primary="Events"/>
+          </ListItem>
+          <ListItem button key="1" onClick={() => {
+            props.history.push("/admin/customers")
+          }}>
+            <ListItemIcon><CustomerIcon/></ListItemIcon>
+            <ListItemText className={classes.drawerOption} primary="Customers"/>
+          </ListItem>
+          <ListItem button key="1" onClick={() => {
+            localStorage.removeItem("userInfo")
+            props.history.push("/login")
+          }}>
+            <ListItemIcon><ExitToAppIcon/></ListItemIcon>
+            <ListItemText className={classes.drawerOption} primary="Logout"/>
+          </ListItem>
         </List>
       </Drawer>
       <main className={classes.content}>
@@ -173,3 +175,5 @@ export default function AdminWrapper({children}) {
     </div>
   );
 }
+
+export default withRouter(AdminWrapper);
