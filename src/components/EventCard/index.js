@@ -38,7 +38,7 @@ const useStyles = makeStyles((theme) => ({
     backgroundColor: red[500],
   },
   eventCard: {
-    margin: 18
+    margin: 10
   },
   price: {
     color: "red"
@@ -59,7 +59,7 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-export default function EventCard() {
+export default function EventCard({event}) {
   const classes = useStyles();
   const [expanded, setExpanded] = useState(false);
   const [isOpen, setModalOpen] = useState(false);
@@ -69,15 +69,15 @@ export default function EventCard() {
   };
 
   const WebCard = () => (
-      <Box component="div" width={expanded ? "100%" : 1 / 4} className={classes.eventCard}>
+      <Box component="div" width={expanded ? "100%" : 1 / 3.5} className={classes.eventCard}>
         <Card style={expanded ?
             {display: 'flex', flexDirection: 'row', maxWidth: "100%"} :
             {display: 'flex', flexDirection: 'column', maxWidth: 345}}>
-          <Box component="div" style={expanded ? {maxWidth: "40%"} : {}}>
+          <Box component="div" style={expanded ? {minWidth: "30%"} : {}}>
             <CardHeader
                 avatar={
                   <Avatar aria-label="recipe" className={classes.avatar}>
-                    R
+                    {/*{event.title[0].toUpperCase()}*/}
                   </Avatar>
                 }
                 action={
@@ -89,22 +89,22 @@ export default function EventCard() {
             />
             <CardContent>
               <Typography variant="h6">
-                Refinable
+                {event.title}
               </Typography>
               <Box component="div" style={{marginTop: 12}}>
-                Total Raise
+                Total Price
               </Box>
               <Typography variant="h5" className={classes.price}>
-                180 K
+                {event.price}
               </Typography>
             </CardContent>
             <CardActions disableSpacing>
-              <IconButton aria-label="add to favorites">
-                <FavoriteIcon/>
-              </IconButton>
-              <IconButton aria-label="share">
-                <ShareIcon/>
-              </IconButton>
+              {/*<IconButton aria-label="add to favorites">*/}
+              {/*  <FavoriteIcon/>*/}
+              {/*</IconButton>*/}
+              {/*<IconButton aria-label="share">*/}
+              {/*  <ShareIcon/>*/}
+              {/*</IconButton>*/}
               <IconButton
                   className={clsx(classes.expand, {
                     [classes.expandOpen]: expanded,
@@ -119,11 +119,11 @@ export default function EventCard() {
           </Box>
           <Collapse in={expanded} timeout="1000" unmountOnExit>
             <CardContent>
-              <Typography paragraph>Method:</Typography>
-              <Typography paragraph>
-                Heat 1/2 cup of the broth in a pot until simmering, add saffron and set aside for 10
-                minutes.
-              </Typography>
+              {event.location && <Typography><b>Location:</b> {event.location}</Typography>}
+              {event.startDateTime && <Typography><b>Date:</b> {event.startDateTime}</Typography>}
+              {event.type && <Typography><b>Type:</b> {event.type}</Typography>}
+              {event.sizeOfVenue && <Typography paragraph><b>Space:</b> {event.sizeOfVenue}</Typography>}
+              <Typography paragraph><b>Detail:</b></Typography>
               <Typography paragraph>
                 Heat oil in a (14- to 16-inch) paella pan or a large, deep skillet over medium-high
                 heat. Add chicken, shrimp and chorizo, and cook, stirring occasionally until lightly
@@ -132,9 +132,9 @@ export default function EventCard() {
                 pepper, and cook, stirring often until thickened and fragrant, about 10 minutes. Add
                 saffron broth and remaining 4 1/2 cups chicken broth; bring to a boil.
               </Typography>
-              <Button color="info" onClick={() => setModalOpen(true)}>
-                More Details
-              </Button>
+              {/*<Button color="info" onClick={() => setModalOpen(true)}>*/}
+              {/*  More Details*/}
+              {/*</Button>*/}
             </CardContent>
           </Collapse>
         </Card>
