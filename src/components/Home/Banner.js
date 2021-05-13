@@ -28,14 +28,14 @@ const useStyles = makeStyles((theme) => ({
       maxWidth: "90%",
     },
   },
-  redTitle:{
+  redTitle: {
     color: 'red'
   },
-  heroSubtitle:{
+  heroSubtitle: {
     maxWidth: "80%",
     margin: "0 auto 16px",
     color: "#a8a8b4",
-    fontSize: "1.5vw",
+    fontSize: 22,
     [theme.breakpoints.down('sm')]: {
       fontSize: "4vw",
       maxWidth: "90%",
@@ -43,7 +43,7 @@ const useStyles = makeStyles((theme) => ({
   }
 }));
 
-function BannerComponent() {
+function BannerComponent({title, titleHighlighted, description}) {
   const classes = useStyles()
 
   return (
@@ -51,13 +51,11 @@ function BannerComponent() {
       <Container className={classes.container}>
         <Box component="div" className={classes.heroContent}>
           <Typography variant="h2" className={classes.title}>
-            Decentralize the way your ideas {" "}
-            <Box component="span" className={classes.redTitle}>raise capital.</Box>
+             {title + " "}
+            <Box component="span" className={classes.redTitle}>{titleHighlighted}</Box>
           </Typography>
-          <Typography variant="subtitle1" className={classes.heroSubtitle}>
-            Be the first to join Polkastarter,
-            a Protocol built for cross-chain token pools and auctions,
-            enabling projects to raise capital on a decentralized and interoperable environment based on Polkadot.
+          <Typography variant="subtitle2" className={classes.heroSubtitle}>
+            {description}
           </Typography>
         </Box>
       </Container>

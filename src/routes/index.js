@@ -68,7 +68,7 @@ function AppRoutes() {
             <SignUp/>
           </Route>
           <Route path="/about">
-            <AboutPage/>
+            <AboutPage onToggleDark={toggleDarkTheme} themeMode={theme.palette.type}/>
           </Route>
           <Route path="/disclaimer">
             <DisclaimerPage/>

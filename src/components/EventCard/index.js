@@ -1,4 +1,4 @@
-import React, {useEffect, useState} from 'react';
+import React, {useState} from 'react';
 import {makeStyles} from '@material-ui/core/styles';
 import clsx from 'clsx';
 import Card from '@material-ui/core/Card';
@@ -10,11 +10,10 @@ import Avatar from '@material-ui/core/Avatar';
 import IconButton from '@material-ui/core/IconButton';
 import Typography from '@material-ui/core/Typography';
 import {red} from '@material-ui/core/colors';
-import FavoriteIcon from '@material-ui/icons/Favorite';
-import ShareIcon from '@material-ui/icons/Share';
 import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
 import {colors} from "../../utils/colors"
 import {Box, Hidden, Modal, Button, Fade} from "@material-ui/core";
+import moment from "moment";
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -71,8 +70,8 @@ export default function EventCard({event}) {
   const WebCard = () => (
       <Box component="div" width={expanded ? "100%" : 1 / 3.5} className={classes.eventCard}>
         <Card style={expanded ?
-            {display: 'flex', flexDirection: 'row', maxWidth: "100%"} :
-            {display: 'flex', flexDirection: 'column', maxWidth: 345}}>
+            {display: 'flex', flexDirection: 'row', maxWidth: "100%", borderRadius: 20} :
+            {display: 'flex', flexDirection: 'column', maxWidth: 345, borderRadius: 20}}>
           <Box component="div" style={expanded ? {minWidth: "30%"} : {}}>
             <CardHeader
                 avatar={
@@ -83,7 +82,7 @@ export default function EventCard({event}) {
                 action={
                   <Box component="div"
                        style={{borderRadius: 12, backgroundColor: colors.pink, color: "red", padding: 8, marginTop: 8}}>
-                    21 days left
+                    {moment(event.startDateTime).endOf("day").fromNow()}
                   </Box>
                 }
             />
@@ -99,12 +98,9 @@ export default function EventCard({event}) {
               </Typography>
             </CardContent>
             <CardActions disableSpacing>
-              {/*<IconButton aria-label="add to favorites">*/}
-              {/*  <FavoriteIcon/>*/}
-              {/*</IconButton>*/}
-              {/*<IconButton aria-label="share">*/}
-              {/*  <ShareIcon/>*/}
-              {/*</IconButton>*/}
+              <div style={{marginLeft: 8}}>
+                {event.type && <Typography style={{fontSize: 18}}>{event.type}</Typography>}
+              </div>
               <IconButton
                   className={clsx(classes.expand, {
                     [classes.expandOpen]: expanded,
