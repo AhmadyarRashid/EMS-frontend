@@ -50,6 +50,9 @@ function Footer({themeMode}) {
               <Link to="/about" style={{textDecoration: 'none', color: 'black'}}>
                 <Typography variant="subtitle2" className={classes.subtitle}>About us</Typography>
               </Link>
+              <Link to="/disclaimer" style={{textDecoration: 'none', color: 'black'}}>
+                <Typography variant="subtitle2" className={classes.subtitle}>Disclaimer</Typography>
+              </Link>
             </Grid>
             <Grid item xs={3}>
               <Typography variant="h6" style={{fontWeight: 'bold'}}>Help</Typography>

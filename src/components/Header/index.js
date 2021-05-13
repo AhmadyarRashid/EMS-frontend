@@ -10,9 +10,10 @@ import Swal from "sweetalert2";
 import axios from "axios";
 import {baseUrl} from "../../utils/constant";
 import Modal from "@material-ui/core/Modal";
-import { Formik } from 'formik';
+import {Formik} from 'formik';
 import TextField from "@material-ui/core/TextField";
 import Button from "@material-ui/core/Button";
+import {Link} from "react-router-dom";
 
 const useStyles = makeStyles((theme) => ({
   paper: {
@@ -120,14 +121,18 @@ function Header({onToggleDark, themeMode, ...props}) {
       <Paper className={classes.paper}>
         <Container className={classes.container}>
           <Hidden smUp sm>
-            <Typography variant="h5" subtitle1="h2" className={classes.logo}>
-              EMS
-            </Typography>
+            <Link to="/" style={{textDecoration: 'none', color: 'black'}}>
+              <Typography variant="h5" subtitle1="h2" className={classes.logo}>
+                EMS
+              </Typography>
+            </Link>
           </Hidden>
           <Hidden smDown>
-            <Typography variant="h5" subtitle1="h2" className={classes.logo}>
-              Event Management System
-            </Typography>
+            <Link to="/" style={{textDecoration: 'none', color: 'black'}}>
+              <Typography variant="h5" subtitle1="h2" className={classes.logo}>
+                Event Management System
+              </Typography>
+            </Link>
           </Hidden>
 
           <Box component="div">
@@ -191,7 +196,7 @@ function Header({onToggleDark, themeMode, ...props}) {
         <div className={classes.modal}>
           <h2 id="simple-modal-title">Donation</h2>
           <Formik
-            initialValues={{ email: '', amount: '' }}
+            initialValues={{email: '', amount: ''}}
             validate={values => {
               const errors = {};
               if (!values.email) {
@@ -209,11 +214,11 @@ function Header({onToggleDark, themeMode, ...props}) {
               }
               return errors;
             }}
-            onSubmit={(values, { setSubmitting, resetForm }) => {
+            onSubmit={(values, {setSubmitting, resetForm}) => {
               setTimeout(() => {
                 axios.post(`${baseUrl}/api/event/donations`, values)
                   .then(({data}) => {
-                    if (data.isSuccess){
+                    if (data.isSuccess) {
                       resetForm({})
                       setOpen(false)
                       Swal.fire({

@@ -71,7 +71,7 @@ function AppRoutes() {
             <AboutPage onToggleDark={toggleDarkTheme} themeMode={theme.palette.type}/>
           </Route>
           <Route path="/disclaimer">
-            <DisclaimerPage/>
+            <DisclaimerPage onToggleDark={toggleDarkTheme} themeMode={theme.palette.type}/>
           </Route>
           <Route path="/admin/customers">
             <AdminCustomerDashboard />

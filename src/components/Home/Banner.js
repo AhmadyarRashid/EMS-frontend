@@ -43,7 +43,7 @@ const useStyles = makeStyles((theme) => ({
   }
 }));
 
-function BannerComponent({title, titleHighlighted, description}) {
+function BannerComponent({title, titleHighlighted, description, isDisclaimer = false}) {
   const classes = useStyles()
 
   return (
@@ -54,7 +54,7 @@ function BannerComponent({title, titleHighlighted, description}) {
              {title + " "}
             <Box component="span" className={classes.redTitle}>{titleHighlighted}</Box>
           </Typography>
-          <Typography variant="subtitle2" className={classes.heroSubtitle}>
+          <Typography variant="subtitle2" className={classes.heroSubtitle} align={isDisclaimer ? "left": "center"}>
             {description}
           </Typography>
         </Box>
