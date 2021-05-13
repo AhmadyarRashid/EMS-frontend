@@ -77,7 +77,7 @@ export default function EventCard({event}) {
             <CardHeader
                 avatar={
                   <Avatar aria-label="recipe" className={classes.avatar}>
-                    {/*{event.title[0].toUpperCase()}*/}
+                    {event.title[0].toUpperCase()}
                   </Avatar>
                 }
                 action={

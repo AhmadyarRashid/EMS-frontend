@@ -75,11 +75,12 @@ function Events({themeMode}) {
     setCategory("")
     setStartDate("")
     setEndDate("")
+    setFilteredEvents(events)
   };
 
   if (isloading)
     return <CircularProgress/>
-  console.log("filteredEvents", filteredEvents)
+
   return (
     <Box component="div" className={classes.events}
          style={{backgroundColor: themeMode === "light" ? colors.pink : colors.black}}>

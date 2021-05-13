@@ -6,6 +6,9 @@ import BrightIcon from '@material-ui/icons/Brightness7'
 import MenuIcon from '@material-ui/icons/Menu'
 import {withRouter} from "react-router"
 import NotificationsIcon from '@material-ui/icons/NotificationsNone'
+import Swal from "sweetalert2";
+import axios from "axios";
+import {baseUrl} from "../../utils/constant";
 
 const useStyles = makeStyles((theme) => ({
   paper: {
@@ -51,6 +54,49 @@ function Header({onToggleDark, themeMode, ...props}) {
     setAnchorEl(null);
   };
 
+  const subscriptionHandler = () => {
+    if (isLoggedin){
+      let userInfo = localStorage.getItem("userInfo")
+      userInfo = userInfo ? JSON.parse(userInfo) : {email: ""}
+      if (!userInfo.email){
+        Swal.fire({
+          icon: 'error',
+          title: 'Oops...',
+          text: 'Please login again after logout',
+        })
+      }
+      axios.post(`${baseUrl}/api/event/subscription`, {
+        email:userInfo.email
+      }).then(({data}) => {
+        if(data.isSuccess){
+          Swal.fire({
+            icon: 'success',
+            title: data.payload,
+            timer: 1500
+          })
+        }else {
+          Swal.fire({
+            icon: 'info',
+            title: data.message,
+            timer: 1500
+          })
+        }
+      }).catch(error => {
+        Swal.fire({
+          icon: 'error',
+          title: 'Oops...',
+          text: 'Something went wrong.',
+        })
+      })
+    }else {
+      Swal.fire({
+        icon: 'error',
+        title: 'Oops...',
+        text: 'You need to login first',
+      })
+    }
+  }
+
   return (
     <Paper className={classes.paper}>
       <Container className={classes.container}>
@@ -70,7 +116,7 @@ function Header({onToggleDark, themeMode, ...props}) {
             <BrightIcon onClick={onToggleDark} className={classes.icon}/> :
             <DarkIcon onClick={onToggleDark} className={classes.icon}/>}
 
-          <NotificationsIcon className={classes.icon}/>
+          <NotificationsIcon onClick={() => subscriptionHandler()} className={classes.icon}/>
 
           <MenuIcon
             className={classes.menuIcon}
