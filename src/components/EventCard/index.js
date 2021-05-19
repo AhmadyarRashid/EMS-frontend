@@ -121,9 +121,7 @@ export default function EventCard({event}) {
               {event.sizeOfVenue && <Typography paragraph><b>Space:</b> {event.sizeOfVenue}</Typography>}
               {event.about && <>
                 <Typography paragraph><b>Detail:</b></Typography>
-                <Typography paragraph>
-                  {event.about}
-                </Typography>
+                <div dangerouslySetInnerHTML={{ __html: event.about }} />
               </>}
               <Button color="info" onClick={() => setModalOpen(true)}>
                 More Details
@@ -189,9 +187,7 @@ export default function EventCard({event}) {
               {event.url && <Typography paragraph><b>URL:</b> {event.url}</Typography>}
               {event.about && <>
                 <Typography ><b>Detail:</b></Typography>
-                <Typography paragraph>
-                  {event.about}
-                </Typography>
+                <div dangerouslySetInnerHTML={{ __html: event.about }} />
               </>}
               {/*<Button onClick={() => setModalOpen(false)}>Close</Button>*/}
             </div>

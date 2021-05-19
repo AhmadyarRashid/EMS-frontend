@@ -7,6 +7,11 @@ import {Formik} from 'formik';
 import WrapperComponent from "../Admin/WrapperComponent";
 import axios from "axios";
 import {baseUrl} from "../../utils/constant";
+import { EditorState, convertToRaw } from 'draft-js';
+import { Editor } from "react-draft-wysiwyg";
+import draftToHtml from 'draftjs-to-html';
+import htmlToDraft from 'html-to-draftjs';
+import "react-draft-wysiwyg/dist/react-draft-wysiwyg.css";
 import Swal from "sweetalert2"
 
 const useStyles = makeStyles((theme) => ({
@@ -62,6 +67,7 @@ function CreateEvent({themeMode, ...props}) {
     url: '',
     about: '',
   })
+  const [editorState, setEditorState] = useState(EditorState.createEmpty())
 
   useEffect(() => {
     if (id) {
@@ -102,6 +108,7 @@ function CreateEvent({themeMode, ...props}) {
             axios.post(`${baseUrl}/api/event/update/${id}`, {
               ...values,
               type,
+              about: String(draftToHtml(convertToRaw(editorState.getCurrentContent())))
             }).then(({data}) => {
               if (data.isSuccess) {
                 resetForm({
@@ -114,6 +121,7 @@ function CreateEvent({themeMode, ...props}) {
                   url: '',
                   about: '',
                 })
+                setEditorState(EditorState.createEmpty())
                 props.history.push('/admin')
                 Swal.fire({
                   icon: "success",
@@ -128,7 +136,8 @@ function CreateEvent({themeMode, ...props}) {
             axios.post(`${baseUrl}/api/event/create`, {
               ...values,
               type,
-              userId: userInfo.id
+              userId: userInfo.id,
+              about: String(draftToHtml(convertToRaw(editorState.getCurrentContent())))
             }).then(({data}) => {
               if (data.isSuccess) {
                 resetForm({})
@@ -339,17 +348,25 @@ function CreateEvent({themeMode, ...props}) {
                   >
                     About
                   </Typography>
-                  <TextareaAutosize
-                    className={classes.textField}
-                    required
-                    name="about"
-                    variant="outlined"
-                    rows={8}
-                    style={themeMode === "dark" ? {backgroundColor: 'transparent', color: 'white'}: {}}
-                    onChange={handleChange}
-                    onBlur={handleBlur}
-                    value={values.about}
+                  <Editor
+                    style={{height: 500}}
+                    editorState={editorState}
+                    toolbarClassName="toolbarClassName"
+                    wrapperClassName="wrapperClassName"
+                    editorClassName="editorClassName"
+                    onEditorStateChange={setEditorState}
                   />
+                  {/*<TextareaAutosize*/}
+                  {/*  className={classes.textField}*/}
+                  {/*  required*/}
+                  {/*  name="about"*/}
+                  {/*  variant="outlined"*/}
+                  {/*  rows={8}*/}
+                  {/*  style={themeMode === "dark" ? {backgroundColor: 'transparent', color: 'white'}: {}}*/}
+                  {/*  onChange={handleChange}*/}
+                  {/*  onBlur={handleBlur}*/}
+                  {/*  value={values.about}*/}
+                  {/*/>*/}
                 </Box>
               </Grid>
 
