@@ -161,9 +161,9 @@ function Header({onToggleDark, themeMode, ...props}) {
                   handleClose()
                   props.history.push("/admin")
                 }}>Dashboard</MenuItem>
-                <MenuItem onClick={() => {
-                  setOpen(true)
-                }}>Donation</MenuItem>
+                {/*<MenuItem onClick={() => {*/}
+                {/*  setOpen(true)*/}
+                {/*}}>Donation</MenuItem>*/}
                 <MenuItem onClick={() => {
                   handleClose()
                   localStorage.removeItem("userInfo")

@@ -13,6 +13,7 @@ import TextField from "@material-ui/core/TextField";
 import ButtonGroup from "@material-ui/core/ButtonGroup";
 import Button from "@material-ui/core/Button";
 import moment from "moment";
+import CalenderComponent from "./Calender";
 
 const useStyles = makeStyles((theme) => ({
   events: {
@@ -33,10 +34,12 @@ const useStyles = makeStyles((theme) => ({
     flexWrap: 'wrap',
   },
   formControl: {
+    // display: 'none',
     margin: theme.spacing(1),
     minWidth: 120,
   },
   searchContainer: {
+    width: '100%',
     marginLeft: 14,
     display: 'flex',
     flexDirection: 'row',
@@ -49,8 +52,8 @@ function Events({themeMode}) {
 
   const [events, setEvents] = useState([])
   const [isloading, setLoading] = useState(false);
-  const [sort, setSort] = useState("calendar")
-  const [category, setCategory] = useState("previous")
+  const [sort, setSort] = useState("category")
+  const [category, setCategory] = useState("all")
   const [filteredEvents, setFilteredEvents] = useState([]);
   const [startDate, setStartDate] = useState("");
   const [endDate, setEndDate] = useState("");
@@ -72,7 +75,7 @@ function Events({themeMode}) {
 
   const handleChange = (event) => {
     setSort(event.target.value);
-    setCategory("")
+    setCategory("all")
     setStartDate("")
     setEndDate("")
     setFilteredEvents(events)
@@ -82,101 +85,114 @@ function Events({themeMode}) {
     return <CircularProgress/>
 
   return (
-    <Box component="div" className={classes.events}
-         style={{backgroundColor: themeMode === "light" ? colors.pink : colors.black}}>
-      <Container>
-        <Box component="div" className={classes.searchContainer}>
-          <FormControl variant="outlined" className={classes.formControl}>
-            <InputLabel id="demo-simple-select-outlined-label">Sort</InputLabel>
-            <Select
-              labelId="demo-simple-select-outlined-label"
-              id="demo-simple-select-outlined"
-              value={sort}
-              onChange={handleChange}
-              style={{minWidth: 385}}
-              label="Sort"
-            >
-              <MenuItem value="calendar">Calendar</MenuItem>
-              <MenuItem value="category">Category</MenuItem>
-            </Select>
-          </FormControl>
+    <React.Fragment>
+      <CalenderComponent events={events}/>
+      <Box component="div" className={classes.events}
+           style={{backgroundColor: themeMode === "light" ? colors.pink : colors.black}}>
+        <Container>
+          <Box component="div" className={classes.searchContainer}>
+            <FormControl variant="outlined" className={classes.formControl}>
+              <InputLabel id="demo-simple-select-outlined-label">Sort</InputLabel>
+              <Select
+                labelId="demo-simple-select-outlined-label"
+                id="demo-simple-select-outlined"
+                value={sort}
+                onChange={handleChange}
+                style={{minWidth: 385}}
+                label="Sort"
+              >
+                <MenuItem value="calendar">Calendar</MenuItem>
+                <MenuItem value="category">Category</MenuItem>
+              </Select>
+            </FormControl>
 
-          {sort === "calendar"
-            ? <Box component="div">
-              <TextField
-                id="date"
-                label="start date"
-                type="date"
-                value={startDate}
-                onChange={e => {
-                  setStartDate(e.target.value)
-                  setFilteredEvents(events.filter(item =>
-                    moment(item.startDateTime).endOf("day").diff(moment(e.target.value).endOf("day"), "days") >= 0 &&
-                    moment(item.startDateTime).endOf("day").diff(moment(endDate).endOf("day"), "days") <= 0
-                  ))
-                }}
-                className={classes.textField}
-                style={{marginRight: 20}}
-                InputLabelProps={{
-                  shrink: true,
-                }}
-              />
-              <TextField
-                id="date"
-                label="end date"
-                type="date"
-                value={endDate}
-                onChange={e => {
-                  setEndDate(e.target.value)
-                  setFilteredEvents(events.filter(item =>
-                    moment(item.startDateTime).endOf("day").diff(moment(startDate).endOf("day"), "days") >= 0 &&
-                    moment(item.startDateTime).endOf("day").diff(moment(e.target.value).endOf("day"), "days") <= 0
-                  ))
-                }}
-                className={classes.textField}
-                style={{marginRight: 20}}
-                InputLabelProps={{
-                  shrink: true,
-                }}
-              />
-            </Box>
-            : <Box component="div" style={{marginTop: 20}}>
-              <ButtonGroup color="secondary" aria-label="outlined primary button group">
-                <Button
-                  onClick={() => {
-                    setCategory("previous")
-                    setFilteredEvents(events.filter(item =>  moment(item.startDateTime).endOf("day").diff(moment(new Date()).endOf("day"), "days") < 0))
+            {sort === "calendar"
+              ? <Box component="div">
+                <TextField
+                  id="date"
+                  label="start date"
+                  type="date"
+                  value={startDate}
+                  onChange={e => {
+                    setStartDate(e.target.value)
+                    setFilteredEvents(events.filter(item =>
+                      moment(item.startDateTime).endOf("day").diff(moment(e.target.value).endOf("day"), "days") >= 0 &&
+                      moment(item.startDateTime).endOf("day").diff(moment(endDate).endOf("day"), "days") <= 0
+                    ))
                   }}
-                  variant={category === "previous" && "contained"}
-                >Previous</Button>
-                <Button
-                  onClick={() => {
-                    setCategory("today")
-                    setFilteredEvents(events.filter(item =>  moment(item.startDateTime).endOf("day").diff(moment(new Date()).endOf("day"), "days") === 0))
+                  className={classes.textField}
+                  style={{marginRight: 20}}
+                  InputLabelProps={{
+                    shrink: true,
                   }}
-                  variant={category === "today" && "contained"}
-                >Today</Button>
-                <Button
-                  onClick={() => {
-                    setCategory("upComing")
-                    setFilteredEvents(events.filter(item =>  moment(item.startDateTime).endOf("day").diff(moment(new Date()).endOf("day"), "days") > 0))
+                />
+                <TextField
+                  id="date"
+                  label="end date"
+                  type="date"
+                  value={endDate}
+                  onChange={e => {
+                    setEndDate(e.target.value)
+                    setFilteredEvents(events.filter(item =>
+                      moment(item.startDateTime).endOf("day").diff(moment(startDate).endOf("day"), "days") >= 0 &&
+                      moment(item.startDateTime).endOf("day").diff(moment(e.target.value).endOf("day"), "days") <= 0
+                    ))
                   }}
-                  variant={category === "upComing" && "contained"}
-                >Up-Coming</Button>
-              </ButtonGroup>
-
-            </Box>}
-        </Box>
-        <Box
-          component="div"
-          className={classes.eventsList}
-        >
-          {filteredEvents.length < 1 ? <h3>No Event avaiable</h3> : filteredEvents.map(item => (
-            <EventCard event={item}/>
-          ))}
-        </Box>
-      </Container>
-    </Box>
+                  className={classes.textField}
+                  style={{marginRight: 20}}
+                  InputLabelProps={{
+                    shrink: true,
+                  }}
+                />
+              </Box>
+              : <center>
+                <Box component="div" style={{marginTop: 20}}>
+                  <ButtonGroup color="secondary" aria-label="outlined primary button group">
+                    <Button
+                      onClick={() => {
+                        setCategory("all")
+                        setFilteredEvents(events)
+                      }}
+                      variant={category === "all" && "contained"}
+                    >All
+                    </Button>
+                    <Button
+                      onClick={() => {
+                        setCategory("previous")
+                        setFilteredEvents(events.filter(item => moment(item.startDateTime).endOf("day").diff(moment(new Date()).endOf("day"), "days") < 0))
+                      }}
+                      variant={category === "previous" && "contained"}
+                    >Previous</Button>
+                    <Button
+                      onClick={() => {
+                        setCategory("today")
+                        setFilteredEvents(events.filter(item => moment(item.startDateTime).endOf("day").diff(moment(new Date()).endOf("day"), "days") === 0))
+                      }}
+                      variant={category === "today" && "contained"}
+                    >Today</Button>
+                    <Button
+                      onClick={() => {
+                        setCategory("upComing")
+                        setFilteredEvents(events.filter(item => moment(item.startDateTime).endOf("day").diff(moment(new Date()).endOf("day"), "days") > 0))
+                      }}
+                      variant={category === "upComing" && "contained"}
+                    >Up-Coming</Button>
+                  </ButtonGroup>
+                </Box>
+              </center>
+            }
+          </Box>
+          <Box
+            component="div"
+            className={classes.eventsList}
+          >
+            {filteredEvents.length < 1 ? <h3>No Event avaiable</h3> : filteredEvents.map(item => (
+              <EventCard event={item}/>
+            ))}
+          </Box>
+        </Container>
+      </Box>
+    </React.Fragment>
   )
 }
 

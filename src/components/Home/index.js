@@ -6,7 +6,6 @@ import Events from "./Events";
 import NewsLettterSubscription from "./NewsletterSubscription";
 import ContactUs from "./Contactus";
 import Footer from "./Footer";
-import {Box, Typography} from "@material-ui/core";
 
 function HomePage(props) {
   return (
